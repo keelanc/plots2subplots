@@ -8,10 +8,12 @@ function plots2subplots(haxes)
 %
 %   The order of subplots is made as square as possible (width >= height).
 %
+%   See also PRETTYPLOTS.
+%   https://github.com/keelanc/
+
 %   Author: Keelan Chu For
-%   2014-07-07
-%   https://gist.github.com/keelanc/
-%   http://stackoverflow.com/questions/5807834/
+%   2014-09-03
+%   https://github.com/keelanc/plots2subplots
 
 % test
 % close all
