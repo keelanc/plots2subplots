@@ -11,6 +11,8 @@ function hFig = plots2subplots(haxes, varargin)
 %   PLOTS2SUBPLOTS(...,'Colormap',MAP) sets the subplots' colormaps to MAP.
 %   Type HELP GRAPH3D to see a number of useful colormaps.
 %
+%   hFig = PLOTS2SUBPLOTS(...) retrieves the subplot figure handle.
+%
 %   The order of subplots is made as square as possible (width >= height).
 %
 %   See also PRETTYPLOTS, COLORMAP.

@@ -3,7 +3,7 @@
 
 ### What is this repository for? ###
 
-Copy multiple Matlab figures to a single subplot-formatted figure.
+Copy multiple Matlab figures to a single subplot-formatted figure. The order of subplots is made as square as possible (width >= height).
 
 
 ### Getting Started ###
@@ -13,20 +13,28 @@ You can download the files in one of two ways:
 * using the **Download** button to get the ZIP file and extracting the files to
   a folder
 
-Once the files are on your PC, add the folder `plots2subplots` to your Matlab 
+Once the files are on your PC, add the folder `plots2subplots` to your Matlab
 path or **copy** the file file `plots2subplots.m` it to your working folder.
 
 
 ### Usage
 
-The `plots2subplots.m` script can be run from the Matlab command window. The file must be in current working directory or in another directory that is in your path. 
+The `plots2subplots.m` script can be run from the Matlab command window. The file must be in current working directory or in another directory that is in your path.
 
-`plots2subplots(haxes)` creates a single subplot-formatted figure from
+You can type `help plots2subplots` in the command window for the description of its usage:
+
+> `plots2subplots(haxes)` creates a single subplot-formatted figure from
 the axes handles specified in `haxes`.
+>
+> `plots2subplots()` creates a single subplot-formatted figure from copies of all open figures.
+>
+> `plots2subplots('all')` has the same effect as `plots2subplots()`.
+>
+> `plots2subplots(...,'Colormap',map)` sets the subplots' colormaps to `map`. Type `help graph3d` to see a number of useful colormaps.
+>
+> `hFig = plots2subplots(...)` retrieves the subplot figure handle.
 
-`plots2subplots()` creates a single subplot-formatted figure from copies of all open figures.
 
-Type `help plots2subplots` in the command window for the description of its usage.
 
 
 ### Useful References ###
