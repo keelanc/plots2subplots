@@ -8,18 +8,23 @@ function hFig = plots2subplots(haxes, varargin)
 %   PLOTS2SUBPLOTS(haxes) creates a single subplot-formatted figure from
 %   the axes handles specified in haxes.
 %
-%   PLOTS2SUBPLOTS(...,'Colormap',MAP) sets the subplots' colormaps to MAP.
-%   Type HELP GRAPH3D to see a number of useful colormaps.
+%   PLOTS2SUBPLOTS(...,'Colormap'
 %
 %   The order of subplots is made as square as possible (width >= height).
 %
-%   See also PRETTYPLOTS, COLORMAP.
+%   See also PRETTYPLOTS.
 %   https://github.com/keelanc/
 
 %   Author: Keelan Chu For
-%   2014-12-09
+%   2014-09-03
 %   https://github.com/keelanc/plots2subplots
 
+% test
+% close all
+% for ii=1:14
+%     figure
+%     ezplot(['x^',num2str(ii)])
+% end
 
 if nargin == 0 || strcmp(haxes,'all') % find all open figures
     haxes = findobj('type','axes');
