@@ -23,8 +23,7 @@ The `plots2subplots.m` script can be run from the Matlab command window. The fil
 
 You can type `help plots2subplots` in the command window for the description of its usage:
 
-> `plots2subplots(haxes)` creates a single subplot-formatted figure from
-the axes handles specified in `haxes`.
+> `plots2subplots(haxes)` creates a single subplot-formatted figure from a vector of axes handles specified in `haxes`. `haxes` can also be a vector of figure handles.
 >
 > `plots2subplots()` creates a single subplot-formatted figure from copies of all open figures.
 >

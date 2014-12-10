@@ -5,8 +5,9 @@ function hFig = plots2subplots(haxes, varargin)
 %
 %   PLOTS2SUBPLOTS('all') has the same effect as PLOTS2SUBPLOTS().
 %
-%   PLOTS2SUBPLOTS(haxes) creates a single subplot-formatted figure from
-%   the axes handles specified in haxes.
+%   PLOTS2SUBPLOTS(HAXES) creates a single subplot-formatted figure from
+%   a vector of axes handles specified in HAXES. HAXES can also be a vector
+%   of figure handles.
 %
 %   PLOTS2SUBPLOTS(...,'Colormap',MAP) sets the subplots' colormaps to MAP.
 %   Type HELP GRAPH3D to see a number of useful colormaps.
@@ -19,13 +20,19 @@ function hFig = plots2subplots(haxes, varargin)
 %   https://github.com/keelanc/
 
 %   Author: Keelan Chu For
-%   2014-12-09
+%   2014-12-10
 %   https://github.com/keelanc/plots2subplots
 
+try % figure handles?
+    haxes = gca(haxes);
+    haxes = cell2mat(haxes);
+catch
+    % not figure handles
+end
 
-if nargin == 0 || strcmp(haxes,'all') % find all open figures
+if nargin == 0 || strcmp(haxes,'all')           % find all open figures
     haxes = findobj('type','axes');
-    haxes = haxes(end:-1:1);                      % plot oldest first
+    haxes = haxes(end:-1:1);                    % plot oldest first
 end
 
 % make as square as possible, longest dimension along horizontal
