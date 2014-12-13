@@ -9,8 +9,17 @@ function hFig = plots2subplots(haxes, varargin)
 %   a vector of axes handles specified in HAXES. HAXES can also be a vector
 %   of figure handles.
 %
-%   PLOTS2SUBPLOTS(...,'Colormap',MAP) sets the subplots' colormaps to MAP.
-%   Type HELP GRAPH3D to see a number of useful colormaps.
+%   PLOTS2SUBPLOTS(...,Name,Value) specifies special figure properties 
+%   using one or more Name,Value pair arguments. Use this option with any 
+%   of the input arguments in the previous syntaxes.
+%
+%   Name-Value Pair Arguments
+%       'Colormap' - sets the subplots' colormaps
+%       'inherit' (default) | 'gray' | 'jet' | 'default' | hsv(128)
+%       Type HELP GRAPH3D to see more useful colormaps.
+%
+%       'Shape' - determines the overall arrangement of subplots
+%       'square' (default) | 'row' | 'column'
 %
 %   hFig = PLOTS2SUBPLOTS(...) retrieves the subplot figure handle.
 %
@@ -20,28 +29,36 @@ function hFig = plots2subplots(haxes, varargin)
 %   https://github.com/keelanc/
 
 %   Author: Keelan Chu For
-%   2014-12-10
+%   2014-12-13
 %   https://github.com/keelanc/plots2subplots
 
-try % figure handles?
-    haxes = gca(haxes);
+
+if nargin == 0 || (ischar(haxes) && strcmp(haxes,'all'))
+    haxes = findobj('type','axes');         % Find all open figures
+    haxes = haxes(end:-1:1);                % Plot oldest first
+elseif all(ishghandle(haxes,'figure'))      % Convert figure handles
+    haxes = cell2mat(gca(haxes));           % to axes handles
+elseif iscell(haxes)                        % Cell array of axes handles
     haxes = cell2mat(haxes);
-catch
-    % not figure handles
 end
 
-if nargin == 0 || strcmp(haxes,'all')           % find all open figures
-    haxes = findobj('type','axes');
-    haxes = haxes(end:-1:1);                    % plot oldest first
-end
+[Colormap,Shape] = parse_plots2subplots(varargin{:});
 
-% make as square as possible, longest dimension along horizontal
 ll = length(haxes);
 if ll < 2
     error('plots2subplots requires at least two figures')
 end
-yy = floor(sqrt(ll));
-xx = ceil(ll/yy);
+if strcmp(Shape,'square')
+    % make as square as possible, longest dimension along horizontal
+    yy = floor(sqrt(ll));
+    xx = ceil(ll/yy);
+elseif strcmp(Shape,'row')
+    yy = 1;
+    xx = ll;
+elseif strcmp(Shape,'column')
+    yy = ll;
+    xx = 1;
+end
 hFig = figure;                                  % new figure
 for ii=1:ll
     dummy = subplot(yy,xx,ii,'Parent',hFig);    % temporary subplot
@@ -49,18 +66,27 @@ for ii=1:ll
     delete(dummy);
     haxesnew = copyobj(haxes(ii),hFig);         % copy a figure to hFigure
     set(haxesnew,'Position',newPos);            % and adjust position
-    set(get(haxesnew,'parent'), 'Colormap',...  % and maintain original
-        get(get(haxes(ii),'parent'), 'Colormap')); % colormap
-    
-    if nargin > 1
-        if any(strcmp(varargin, 'Colormap'))
-            ind = find(strcmp(varargin, 'Colormap'));
-            try
-                set(get(haxesnew,'parent'), 'Colormap',...
-                colormap(varargin{ind+1}));
-            catch
-                error('Invalid colormap');
-            end
-        end
+    if strcmp(Colormap,'inherit')               % and maintain original
+        set(get(haxesnew,'parent'), 'Colormap',... % colormap
+            get(get(haxes(ii),'parent'), 'Colormap'));
+    else
+        set(get(haxesnew,'parent'), 'Colormap',...
+        colormap(Colormap));
     end
 end
+
+
+function [Colormap,Shape] = parse_plots2subplots(varargin)
+% 
+p = inputParser;
+defaultColormap = 'inherit';
+defaultShape = 'square';
+expectedShape = {'square','row','column'};
+
+addParameter(p,'Colormap',defaultColormap);
+addParameter(p,'Shape',defaultShape,...
+             @(x) any(validatestring(x,expectedShape)));
+
+parse(p,varargin{:});
+Colormap = p.Results.Colormap;
+Shape = p.Results.Shape;

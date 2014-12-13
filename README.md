@@ -3,7 +3,7 @@
 
 ### What is this repository for? ###
 
-Copy multiple Matlab figures to a single subplot-formatted figure. The order of subplots is made as square as possible (width >= height).
+Copy multiple Matlab figures to a single subplot-formatted figure.
 
 
 ### Getting Started ###
@@ -29,7 +29,18 @@ You can type `help plots2subplots` in the command window for the description of 
 >
 > `plots2subplots('all')` has the same effect as `plots2subplots()`.
 >
-> `plots2subplots(...,'Colormap',map)` sets the subplots' colormaps to `map`. Type `help graph3d` to see a number of useful colormaps.
+> `plots2subplots(...,Name,Value)` specifies special figure properties  using one or more Name,Value pair arguments. Use this option with any  of the input arguments in the previous syntaxes.
+>
+>   > Name-Value Pair Arguments
+>   > - 'Colormap' - sets the subplots' colormaps
+>   >   - 'inherit' (default)
+>   >   - other examples: 'gray' | 'jet' | 'default' | hsv(128)
+>   >   - Type `help graph3d` to see more useful colormaps.
+>
+>   > - 'Shape' - determines the overall arrangement of subplots
+>   >   - 'square' (default) - The order of subplots is made as square as possible (width >= height).
+>   >   - 'row' - subplots are side-by-side in a single row
+>   >   - 'column' - subplots are stacked in a single column
 >
 > `hFig = plots2subplots(...)` retrieves the subplot figure handle.
 
