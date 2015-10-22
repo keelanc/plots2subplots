@@ -37,7 +37,11 @@ if nargin == 0 || (ischar(haxes) && strcmp(haxes,'all'))
     haxes = findobj('type','axes');         % Find all open figures
     haxes = haxes(end:-1:1);                % Plot oldest first
 elseif all(ishghandle(haxes,'figure'))      % Convert figure handles
-    haxes = cell2mat(gca(haxes));           % to axes handles
+    try
+        haxes = findall(haxes,'type','axes');
+    catch % old Matlab version
+        haxes = cell2mat(gca(haxes));       % to axes handles
+    end
 elseif iscell(haxes)                        % Cell array of axes handles
     haxes = cell2mat(haxes);
 end
@@ -73,6 +77,8 @@ for ii=1:ll
         set(get(haxesnew,'parent'), 'Colormap',...
         colormap(Colormap));
     end
+    set(gca,'TitleFontWeight','normal');       % and set normal title font
+    set(gca,'TitleFontSizeMultiplier',1.0);
 end
 
 
@@ -83,8 +89,11 @@ defaultColormap = 'inherit';
 defaultShape = 'square';
 expectedShape = {'square','row','column'};
 
-addParameter(p,'Colormap',defaultColormap);
-addParameter(p,'Shape',defaultShape,...
+% addParameter(p,'Colormap',defaultColormap);
+% addParameter(p,'Shape',defaultShape,...
+%              @(x) any(validatestring(x,expectedShape)));
+addParamValue(p,'Colormap',defaultColormap);
+addParamValue(p,'Shape',defaultShape,...
              @(x) any(validatestring(x,expectedShape)));
 
 parse(p,varargin{:});
